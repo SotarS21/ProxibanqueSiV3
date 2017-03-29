@@ -3,15 +3,28 @@ package metier;
 import java.util.ArrayList;
 import java.util.List;
 
-import service.ServiceActor;
+import javax.faces.bean.ManagedBean;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@ManagedBean
+@Entity
 public class Agence {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id;
 	private String openDate;
 	private Director currentDirector;
 	private List<Adviser>	currentListOfAdviser = new ArrayList<Adviser>();
 	
+
+	public Agence() {
+		super();
+	}
+
 
 	public Agence(String openDate) {
 		this.openDate = openDate;

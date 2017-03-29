@@ -3,6 +3,13 @@ package metier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.ManagedBean;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@ManagedBean
+@Entity
+@DiscriminatorValue("ADVISER")
 public class Adviser extends Person {
 
 	private List<Client> listOfClient = new ArrayList<>();
@@ -13,9 +20,12 @@ public class Adviser extends Person {
 	private String pwd = "pwd";
 
 	private static Adviser INSTANCE = null;
-	private Adviser(){
-		super("", "");
-			}
+	
+	
+	public Adviser() {
+		super();
+	}
+
 	
 	public String getLogin() {
 		return login;

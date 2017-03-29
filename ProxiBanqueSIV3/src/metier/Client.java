@@ -3,9 +3,15 @@ package metier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.ManagedBean;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import service.ServiceActor;
 
-
+@ManagedBean
+@Entity
+@DiscriminatorValue("CLIENT")
 public class Client extends Person {
 
 	private Adviser aviserCurrent;
@@ -20,6 +26,10 @@ public class Client extends Person {
 	protected double overdraftRate;
 	
 	
+	public Client() {
+
+	}
+
 	public enum etype{
 		CASUAL,ENTERPRISE;
 	}

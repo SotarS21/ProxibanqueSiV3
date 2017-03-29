@@ -1,10 +1,26 @@
 
 package metier;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="ACCOUNT_TYPE")
+@DiscriminatorValue("MERE")
 public class BankAccount {
 
 	// attributs
 	private long idClient;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long numAccount;
 	private double sold;
 	private String openDate;
@@ -51,4 +67,9 @@ public class BankAccount {
 		return openDate;
 	}
 
+	public BankAccount() {
+		super();
+	}
+
+	
 }
