@@ -1,8 +1,12 @@
 package dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 public class Connector {
 
@@ -42,7 +46,7 @@ public class Connector {
 				Connector.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			Connector.em.close();			
 		}
 	}
 	
@@ -63,8 +67,33 @@ public class Connector {
 				Connector.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
+			Connector.em.close();
 		}
 	}
+	
+	
+	public <T> List<T> getAllElement(Class<T> classType,String table) {
+
+		List<T> list = null ;
+		String sql = "SELECT c FROM "+ table + " c ";
+		EntityTransaction etxn = Connector.em.getTransaction();
+		try {
+			etxn.begin();
+			TypedQuery<T> query = Connector.em.createQuery(sql, classType);
+			list = query.getResultList();
+			etxn.commit();
+		} catch (Exception e) {
+			if (etxn != null)
+				Connector.em.getTransaction().rollback();
+			System.out.println(e.getMessage());
+			
+		} finally {
+			if (em != null)
+				Connector.em.close();
+		}
+		return list;
+	}
+	
 	public <T> T getElementById(Class<T> classType, long id)
 	{
 		T ret = null;
@@ -82,7 +111,7 @@ public class Connector {
 				Connector.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			Connector.em.close();
 		}
 		return ret;
 	}
@@ -103,7 +132,7 @@ public class Connector {
 				Connector.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			Connector.em.close();
 		}
 	}
 	
