@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -9,12 +10,15 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 
-
+@Named
 public class linkDao implements Idao{
 
 	private  static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Carambar");
 	private static EntityManager em ;
 	
+	public linkDao(){
+		
+	}
 	
 	@Override
 	public void connection()
@@ -37,8 +41,7 @@ public class linkDao implements Idao{
 	@Override
 	public <T> void AddObject(T obj)
 	{
-		
-		
+		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
@@ -52,7 +55,8 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			linkDao.em.close();			
+			linkDao.em.close();	
+			deconnection();
 		}
 	}
 
@@ -60,7 +64,7 @@ public class linkDao implements Idao{
 	public <T> void removeObject(T obj)
 	{
 		
-		
+		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
@@ -75,6 +79,7 @@ public class linkDao implements Idao{
 			e.printStackTrace();
 		}finally {
 			linkDao.em.close();
+			deconnection();
 		}
 	}
 	
@@ -84,6 +89,7 @@ public class linkDao implements Idao{
 @Override
 	public <T> T getElementById(Class<T> classType, long id)
 	{
+	connection();
 		T ret = null;
 		
 		try
@@ -100,6 +106,7 @@ public class linkDao implements Idao{
 			e.printStackTrace();
 		}finally {
 			linkDao.em.close();
+			deconnection();
 		}
 		return ret;
 	}
@@ -107,7 +114,7 @@ public class linkDao implements Idao{
 	@Override
 	public <T> void updateObj(T obj)
 	{
-
+		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
@@ -122,6 +129,7 @@ public class linkDao implements Idao{
 			e.printStackTrace();
 		}finally {
 			linkDao.em.close();
+			deconnection();
 		}
 	}
 	
@@ -129,7 +137,7 @@ public class linkDao implements Idao{
 
 	@Override
 	public <T> List<T> getElementsByType(Class<T> classType, String table) {
-
+		connection();
 		List<T> list = null ;
 		String sql = "SELECT c FROM "+ table + " c ";
 		EntityTransaction etxn = linkDao.em.getTransaction();
@@ -146,6 +154,7 @@ public class linkDao implements Idao{
 		} finally {
 			if (em != null)
 				linkDao.em.close();
+			deconnection();
 		}
 		return list;
 	}

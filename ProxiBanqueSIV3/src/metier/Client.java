@@ -1,13 +1,8 @@
 package metier;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.ManagedBean;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import service.ServiceActor;
 
 @ManagedBean
 @Entity
@@ -30,23 +25,20 @@ public class Client extends Person {
 
 	}
 
+	
+	public Client(String lastName, String firstName) {
+		super(lastName, firstName);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public enum etype{
 		CASUAL,ENTERPRISE;
 	}
 	protected etype type;
 
-	public Client(long id, String idAgence, String lastName, String firstName, String cellphone, String adress,
-			String zipCode, String town, String email) {
-		super(id, idAgence, lastName, firstName, cellphone, email);
-		this.address = adress;
-		this.zipCode = zipCode;
-		this.town = town;
-		ServiceActor.addNewClient(this);
-	}
+	
 
-	public Client(String idAgence, String lastName) {
-		this(0, idAgence, lastName, "", "", "", "", "", ""); 
-	}
 
 	public AccountCurrent getAccountCurrent() {
 		return accountCurrent;

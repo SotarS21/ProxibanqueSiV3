@@ -26,19 +26,18 @@ public class Person {
 	private String login;
 	private String password;
 	
-
-	public Person(long id, String adAgence, String lastName, String firstName, String cellphone, String email) {
-		this.id = id;
-		this.idAgence = adAgence;
+	
+	
+	
+	public Person(String lastName, String firstName) {
+		super();
 		this.lastName = lastName;
 		this.firstName = firstName;
-		this.cellphone = cellphone;
-		this.setEmail(email);
 	}
 
-	
-	
-	
+
+
+
 	public String getLogin() {
 		return login;
 	}
@@ -71,11 +70,6 @@ public class Person {
 		super();
 	}
 
-
-
-	public Person(String idAgence, String lastName) {
-		this(0, idAgence, lastName, "", "", "");
-	}
 
 	public long getId() {
 		return id;
