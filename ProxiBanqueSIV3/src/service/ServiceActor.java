@@ -68,7 +68,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public void removeClient(long id) {
-		dao.removeObject(id);
+		dao.removeObject(Client.class, id);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public void removeAdviser(long id) {
-		dao.removeObject(id);
+		dao.removeObject(Adviser.class, id);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public void removeAgence(long id) {
-		dao.removeObject(id);
+		dao.removeObject(Agence.class, id);
 	}
 
 	/**

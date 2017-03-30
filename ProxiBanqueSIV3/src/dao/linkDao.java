@@ -44,7 +44,6 @@ public class linkDao implements Idao{
 	@Override
 	public <T> void AddObject(T obj)
 	{
-		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
@@ -58,20 +57,19 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			linkDao.em.close();	
-			deconnection();
 		}
 	}
 
 	@Override
-	public <T> void removeObject(T obj)
+	public <T> void removeObject(Class<T> classType ,long id)
 	{
 		
-		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
 		
+			T obj = (T) em.find(classType, id);
+			
 			linkDao.em.remove(obj);
 
 			linkDao.em.getTransaction().commit();
@@ -81,8 +79,6 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			linkDao.em.close();
-			deconnection();
 		}
 	}
 	
@@ -92,7 +88,6 @@ public class linkDao implements Idao{
 @Override
 	public <T> T getElementById(Class<T> classType, long id)
 	{
-	connection();
 		T ret = null;
 		
 		try
@@ -108,8 +103,6 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			linkDao.em.close();
-			deconnection();
 		}
 		return ret;
 	}
@@ -117,7 +110,6 @@ public class linkDao implements Idao{
 	@Override
 	public <T> void updateObj(T obj)
 	{
-		connection();
 		try
 		{
 			linkDao.em.getTransaction().begin();
@@ -131,8 +123,6 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			linkDao.em.close();
-			deconnection();
 		}
 	}
 	
@@ -155,9 +145,6 @@ public class linkDao implements Idao{
 			System.out.println(e.getMessage());
 			
 		} finally {
-			if (em != null)
-				linkDao.em.close();
-			deconnection();
 		}
 		return list;
 	}

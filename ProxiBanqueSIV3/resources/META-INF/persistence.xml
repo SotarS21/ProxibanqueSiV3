@@ -8,7 +8,6 @@
 			<class>metier.Adviser</class>
 			<class>metier.BankAccount</class>
 			<class>metier.Agence</class>
-			<class>metier.Person</class>
 			<class>metier.Client</class>
 			<class>metier.BankCard</class>
 			<class>metier.Director</class>
@@ -18,7 +17,7 @@
 			<!-- Database connection settings -->
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/deleteme?createDatabaseIfNotExist=true" />
+				value="jdbc:mysql://localhost:3306/deletme3?createDatabaseIfNotExist=true" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
 
@@ -26,7 +25,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 
 			<!-- Create/update tables automatically using mapping metadata -->
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 
 			<!-- Pretty print the SQL in the log file and console -->
 			<property name="hibernate.format_sql" value="true" />

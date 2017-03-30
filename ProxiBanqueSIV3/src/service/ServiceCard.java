@@ -27,7 +27,7 @@ public class ServiceCard {
 
 		if (cl.getAccountCurrent() != null) {
 
-			cl.AddBankCard(new BankCard(idCl, type));
+			cl.AddBankCard(new BankCard(idao.getElementById(Client.class, idCl), type));
 			idao.AddObject(cl);
 		}
 	}

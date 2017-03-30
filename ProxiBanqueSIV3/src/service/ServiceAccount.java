@@ -43,13 +43,13 @@ public class ServiceAccount implements IServiceAccount {
 
 		switch (type) {
 		case CURRENT_ACCOUNT:
-			BankAccount tmpCur = new BankAccount( idClient, startSold, "2017-03-15", etype.CURRENT_ACCOUNT);
+			BankAccount tmpCur = new BankAccount( dao.getElementById(Client.class, idClient), startSold, "2017-03-15", etype.CURRENT_ACCOUNT);
 			dao.getElementById(Client.class, idClient).addBanqueAccount(tmpCur);		
 			
 			dao.AddObject(tmpCur);
 			break;
 		case SAVING_ACCOUNT:
-			BankAccount tmpSav = new BankAccount( idClient, startSold, "2017-03-15", etype.SAVING_ACCOUNT);
+			BankAccount tmpSav = new BankAccount( dao.getElementById(Client.class, idClient), startSold, "2017-03-15", etype.SAVING_ACCOUNT);
 			dao.getElementById(Client.class, idClient).addBanqueAccount(tmpSav);		
 			
 			dao.AddObject(tmpSav);
@@ -69,9 +69,9 @@ public class ServiceAccount implements IServiceAccount {
 	public void removeAccountToClient(long idClient, BankAccount.etype type) {
 		Client tmp = dao.getElementById(Client.class, idClient);
 		if (type == BankAccount.etype.CURRENT_ACCOUNT)	
-			dao.removeObject(tmp.getAccountCurrent());
+			dao.removeObject(BankAccount.class, tmp.getAccountCurrent().getNumAccount());
 		else
-			dao.removeObject(tmp.getAccountSaving());
+			dao.removeObject(BankAccount.class,tmp.getAccountSaving().getNumAccount());
 	}
 
 	/**

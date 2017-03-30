@@ -27,7 +27,7 @@ public class Agence {
 	private String openDate;
 	
 	@OneToOne    
-	@JoinColumn(name="personId", referencedColumnName = "personId")
+	@JoinColumn(name="directorId", referencedColumnName = "directorId")
 	private Director currentDirector;
 	
 	@OneToMany(mappedBy = "agence", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })

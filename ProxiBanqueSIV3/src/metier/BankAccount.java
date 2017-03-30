@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import metier.BankAccount.etype;
+
 
 @Entity
 public class BankAccount implements Serializable{
@@ -99,6 +101,14 @@ public class BankAccount implements Serializable{
 
 	public BankAccount() {
 		super();
+	}
+
+	public BankAccount(Client idClient, long startSold, String string, etype currentAccount) {
+
+		this.client = idClient;
+		this.sold = startSold;
+		this.openDate = string;
+		this.type = currentAccount;
 	}
 
 	
