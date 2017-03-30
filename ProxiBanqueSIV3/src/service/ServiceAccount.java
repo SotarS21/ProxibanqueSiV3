@@ -3,7 +3,9 @@ package service;
 import java.util.List;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
+import dao.Idao;
 import metier.AccountCurrent;
 import metier.AccountSaving;
 import metier.BankAccount;
@@ -11,16 +13,18 @@ import metier.BankAccount.etype;
 import metier.Client;
 
 /**
- * @author Jonas Maeva
+ * @author Jonas kevin
  *
  */
 @Dependent
-public class ServiceAccount implements {
+public class ServiceAccount implements IServiceAccount {
 
-	public static long RITCH_CONDITION = 500000;
+	public static long RICH_CONDITION = 500000;
+
+	@Inject
+	Idao dao;
 
 	/**
-	 * @deprecated
 	 * Ajoute un compte au client selon son type.
 	 * 
 	 * @param idClient
@@ -30,7 +34,8 @@ public class ServiceAccount implements {
 	 * @param startSold
 	 *            : montant à la création du compte, ne peux être négatif
 	 */
-	public static void addAccountToClient(long idClient, BankAccount.etype type, long startSold) {
+	@Override
+	public void addAccountToClient(long idClient, BankAccount.etype type, long startSold) {
 		if (startSold < 0) {
 			// TO DO : LOOGER
 			startSold = 0;
@@ -38,10 +43,14 @@ public class ServiceAccount implements {
 
 		switch (type) {
 		case CURRENT_ACCOUNT:
+			AccountCurrent tmpCur = new AccountCurrent(5454, idClient, startSold, "2017-03-15");
+			// dao.getElementById(Client.class, idClient).setAccount(tmp);
+			dao.AddObject(tmpCur);
 			break;
 		case SAVING_ACCOUNT:
-			Connector.getInstance().getElementById(Client.class,idClient)
-					.addBankAccount(new AccountSaving(5848, idClient, startSold, "2017-03-15")); // changer l'ini du compte
+			AccountSaving tmpSav = new AccountSaving(5454, idClient, startSold, "2017-03-15");
+			// dao.getElementById(Client.class, idClient).setAccount(tmp);
+			dao.AddObject(tmpSav);// changer l'ini du compte
 			break;
 
 		}
@@ -55,11 +64,9 @@ public class ServiceAccount implements {
 	 * @param type
 	 *            : type de compte
 	 */
-	public static void removeAccountToClient(long idClient, BankAccount.etype type) {
-		Client tmp = DaoClient.getInstance().getClientById(idClient);
-		DaoAccount.getInstance().removeAccountById(tmp.getAccount(type));
-		tmp.removeBankAccount(tmp.getAccount(type));
-
+	public void removeAccountToClient(long idClient, BankAccount.etype type) {
+		Client tmp = dao.getElementById(Client.class, idClient);
+		dao.removeObject(tmp.getAccount(type));
 	}
 
 	/**
@@ -70,9 +77,15 @@ public class ServiceAccount implements {
 	 * @param newOverdraft
 	 *            : nouvel valeur
 	 */
-	public static void updateOverdrawToClient(long idClient, long newOverdraft) {
-		DaoClient.getInstance().getClientById(idClient).setOverdraftRate(newOverdraft);
-		DaoClient.getInstance().updateClient(DaoClient.getInstance().getClientById(idClient));
+	public void updateOverdrawToClient(long idClient, long newOverdraft) {
+		Client tmp = dao.getElementById(Client.class, idClient);
+		if (tmp.getType() == Client.etype.CASUAL && newOverdraft < 5000)
+			tmp.setOverdraftRate(newOverdraft);
+		else if (tmp.getType() == Client.etype.ENTERPRISE && newOverdraft < 50000)
+			tmp.setOverdraftRate(newOverdraft);
+		// else
+		// error
+		dao.updateObj(tmp);
 	}
 
 	/**
@@ -85,38 +98,39 @@ public class ServiceAccount implements {
 	 * @param sold
 	 *            : somme
 	 */
-	public static void transferAccoutToAccount(BankAccount host, BankAccount dest, double sold) {
+	public void transferAccoutToAccount(BankAccount host, BankAccount dest, double sold) {
 
 		// System.out.println("host old sold = "+host.getSold());
 		host.setSold(-sold);
-		System.out.println("host id = "+host.getNumAccount());
+		// System.out.println("host id = "+host.getNumAccount());
 		// System.out.println("host new sold = "+host.getSold());
-		DaoAccount.getInstance().updateAccountByid(host.getNumAccount(), host.getSold());
+		dao.updateObj(host);
 		// System.out.println("dest old sold = "+dest.getSold());
 		dest.setSold(sold);
 
-		DaoAccount.getInstance().updateAccountByid(dest.getNumAccount(), dest.getSold());
+		dao.updateObj(dest);
 
 		// System.out.println("dest new sold =
 		// "+DaoAccount.getInstance().getAccountById(dest.getNumAccount()).getSold());
-	/*	if (!checkRich(host)) {
-			Client destClient = DaoClient.getInstance().getClientById(dest.getIdClient());
-			destClient.setClientIsRich(false);
-			DaoClient.getInstance().updateClient(destClient);
-		}
-		if (!checkOverdraft(dest)) {
-			if (checkRich(dest)) {
-				Client destClientRitch = DaoClient.getInstance().getClientById(dest.getIdClient());
-				destClientRitch.setClientIsRich(true);
-				DaoClient.getInstance().updateClient(destClientRitch);
-
-			}
-		} else
-			SService.sendInfoToclient(host.getIdClient(), "Carfull you still overdraw , sold : " + dest.getSold());
-
-		if (!checkOverdraft(host))
-			SService.sendInfoToclient(host.getIdClient(),
-					"Carfull you don't have enought money to make a transfert sold : " + host.getSold());*/
+		/*
+		 * if (!checkRich(host)) { Client destClient =
+		 * DaoClient.getInstance().getClientById(dest.getIdClient());
+		 * destClient.setClientIsRich(false);
+		 * DaoClient.getInstance().updateClient(destClient); } if
+		 * (!checkOverdraft(dest)) { if (checkRich(dest)) { Client
+		 * destClientRitch =
+		 * DaoClient.getInstance().getClientById(dest.getIdClient());
+		 * destClientRitch.setClientIsRich(true);
+		 * DaoClient.getInstance().updateClient(destClientRitch);
+		 * 
+		 * } } else SService.sendInfoToclient(host.getIdClient(),
+		 * "Carfull you still overdraw , sold : " + dest.getSold());
+		 * 
+		 * if (!checkOverdraft(host))
+		 * SService.sendInfoToclient(host.getIdClient(),
+		 * "Carfull you don't have enought money to make a transfert sold : " +
+		 * host.getSold());
+		 */
 	}
 
 	/**
@@ -126,8 +140,8 @@ public class ServiceAccount implements {
 	 *            : compte à vérifier
 	 * @return vrai si à découvert, faux si non
 	 */
-	public static boolean checkOverdraft(BankAccount myAccount) {
-		if (myAccount.getSold() > DaoClient.getInstance().getClientById(myAccount.getIdClient()).getOverdraftRate())
+	public boolean checkOverdraft(BankAccount myAccount) {
+		if (myAccount.getSold() > dao.getElementById(Client.class, myAccount.getIdClient()).getOverdraftRate())
 			return false;
 		return true;
 	}
@@ -140,34 +154,39 @@ public class ServiceAccount implements {
 	 * @return vrai si le client a plus de 500000, faux si le client a moins de
 	 *         500000
 	 */
-	public static boolean checkRich(BankAccount myAccount) {
+	public boolean checkRich(BankAccount myAccount) {
 
 		double tmpsold = myAccount.getSold();
 		if (myAccount.getType() == etype.CURRENT_ACCOUNT) {
-			if (DaoClient.getInstance().getClientById(myAccount.getIdClient()).getAccount(etype.SAVING_ACCOUNT) != null)
-				tmpsold += DaoClient.getInstance().getClientById(myAccount.getIdClient())
+			if (dao.getElementById(Client.class,myAccount.getIdClient()).getAccount(etype.SAVING_ACCOUNT) != null)
+				tmpsold += dao.getElementById(Client.class, myAccount.getIdClient())
 						.getAccount(etype.SAVING_ACCOUNT).getSold();
 		} else if (myAccount.getType() == etype.SAVING_ACCOUNT) {
-			if (DaoClient.getInstance().getClientById(myAccount.getIdClient())
+			if (dao.getElementById(Client.class,myAccount.getIdClient())
 					.getAccount(etype.CURRENT_ACCOUNT) != null)
-				tmpsold += DaoClient.getInstance().getClientById(myAccount.getIdClient())
+				tmpsold += dao.getElementById(Client.class,myAccount.getIdClient())
 						.getAccount(etype.CURRENT_ACCOUNT).getSold();
 
 		}
 
-		if (tmpsold < RITCH_CONDITION)
+		if (tmpsold < RICH_CONDITION)
 			return false;
 		return true;
 	}
 
-	
-	public static List<BankAccount> getAllAccount()
-	{
-		return DaoAccount.getInstance().getAllAccount();
+	/**
+	 * récupèration de la litse des comptes existant
+	 * @return list des comptes
+	 */
+	public List<BankAccount> getAllAccount() {
+		return dao.getElementsByType(BankAccount.class, "Account");
 	}
-	
-	public static BankAccount getAccountById(long id)
-	{
-		return DaoAccount.getInstance().getAccountById(id);
+
+	/**
+	 * récupèration d'un comptes par rapport à son identifiant
+	 * @param id = identifiant
+	 */
+	public BankAccount getAccountById(long id) {
+		return dao.getElementById(BankAccount.class, id);
 	}
 }
