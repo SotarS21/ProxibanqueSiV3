@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dao.Idao;
 import metier.AccountCurrent;
@@ -16,6 +17,7 @@ import metier.Client;
  * @author Jonas kevin
  *
  */
+@Named
 @Dependent
 public class ServiceAccount implements IServiceAccount {
 
@@ -66,7 +68,10 @@ public class ServiceAccount implements IServiceAccount {
 	 */
 	public void removeAccountToClient(long idClient, BankAccount.etype type) {
 		Client tmp = dao.getElementById(Client.class, idClient);
-		dao.removeObject(tmp.getAccount(type));
+		if (type == BankAccount.etype.CURRENT_ACCOUNT)	
+			dao.removeObject(tmp.getAccountCurrent());
+		else
+			dao.removeObject(tmp.getAccountSaving());
 	}
 
 	/**
@@ -158,14 +163,13 @@ public class ServiceAccount implements IServiceAccount {
 
 		double tmpsold = myAccount.getSold();
 		if (myAccount.getType() == etype.CURRENT_ACCOUNT) {
-			if (dao.getElementById(Client.class,myAccount.getIdClient()).getAccount(etype.SAVING_ACCOUNT) != null)
-				tmpsold += dao.getElementById(Client.class, myAccount.getIdClient())
-						.getAccount(etype.SAVING_ACCOUNT).getSold();
+			if (dao.getElementById(Client.class,myAccount.getIdClient()).getAccountCurrent() != null)
+				tmpsold += dao.getElementById(Client.class, myAccount.getIdClient()).getAccountSaving().getSold();
 		} else if (myAccount.getType() == etype.SAVING_ACCOUNT) {
 			if (dao.getElementById(Client.class,myAccount.getIdClient())
-					.getAccount(etype.CURRENT_ACCOUNT) != null)
+					.getAccountCurrent() != null)
 				tmpsold += dao.getElementById(Client.class,myAccount.getIdClient())
-						.getAccount(etype.CURRENT_ACCOUNT).getSold();
+						.getAccountSaving().getSold();
 
 		}
 
