@@ -146,7 +146,7 @@ public class ServiceAccount implements IServiceAccount {
 	 * @return vrai si à découvert, faux si non
 	 */
 	public boolean checkOverdraft(BankAccount myAccount) {
-		if (myAccount.getSold() > dao.getElementById(Client.class, myAccount.getIdClient()).getOverdraftRate())
+		if (myAccount.getSold() > dao.getElementById(Client.class, myAccount.getClient().getId()).getOverdraftRate())
 			return false;
 		return true;
 	}
@@ -163,12 +163,12 @@ public class ServiceAccount implements IServiceAccount {
 
 		double tmpsold = myAccount.getSold();
 		if (myAccount.getType() == etype.CURRENT_ACCOUNT) {
-			if (dao.getElementById(Client.class,myAccount.getIdClient()).getAccountCurrent() != null)
-				tmpsold += dao.getElementById(Client.class, myAccount.getIdClient()).getAccountSaving().getSold();
+			if (dao.getElementById(Client.class,myAccount.getClient().getId()).getAccountCurrent() != null)
+				tmpsold += dao.getElementById(Client.class, myAccount.getClient().getId()).getAccountSaving().getSold();
 		} else if (myAccount.getType() == etype.SAVING_ACCOUNT) {
-			if (dao.getElementById(Client.class,myAccount.getIdClient())
+			if (dao.getElementById(Client.class,myAccount.getClient().getId())
 					.getAccountCurrent() != null)
-				tmpsold += dao.getElementById(Client.class,myAccount.getIdClient())
+				tmpsold += dao.getElementById(Client.class,myAccount.getClient().getId())
 						.getAccountSaving().getSold();
 
 		}

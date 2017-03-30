@@ -4,7 +4,6 @@ package service;
 import javax.inject.Inject;
 
 import dao.Idao;
-import metier.BankAccount.etype;
 import metier.BankCard;
 import metier.Client;
 
