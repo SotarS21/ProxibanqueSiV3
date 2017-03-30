@@ -22,4 +22,5 @@ public interface IServiceActor {
 	public  void removeAgence(long id);
 	public  Agence getAgenceById(long id);
 	public  List<Agence> getAllAgence();
+	public List<Client> doAudit();
 }
