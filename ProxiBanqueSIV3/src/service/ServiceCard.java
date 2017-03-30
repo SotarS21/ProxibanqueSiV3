@@ -1,7 +1,9 @@
 
 package service;
 
-import dao.DaoClient;
+import javax.inject.Inject;
+
+import dao.Idao;
 import metier.BankAccount.etype;
 import metier.BankCard;
 import metier.CardElectron;
@@ -12,17 +14,21 @@ import metier.Client;
  * @author Jonas Maëva
  *
  */
-public class ServiceCard extends IService {
+public class ServiceCard {
+	
+	@Inject
+	Idao idao;
+	
 /**
  * Ajoute une carte au client pour son compte courant
  * @param idCl : identifiant client
  * @param type : type de compt
  */
-	public static void addCardToClient(long idCl, BankCard.etype type) {
+	public void addCardToClient(long idCl, BankCard.etype type) {
 
-		Client cl = DaoClient.getInstance().getClientById(idCl);
+		Client cl = idao.getElementById(Client.class, idCl);
 
-		if (cl.getAccount(etype.CURRENT_ACCOUNT) != null) {
+		if (cl.getAccountCurrent() != null) {
 
 			switch (type) {
 			case VISA:
@@ -32,12 +38,11 @@ public class ServiceCard extends IService {
 				cl.AddBankCard(new CardElectron(idCl));
 				break;
 			default:
-				System.out.println("Vous avez un problème");
 				break;
 			}
 
-			DaoClient.getInstance().addClient(cl);
-		}else IService.sendInfoToclient(idCl, " n'a pas de compte courrant donc on ne peut pas lui assigner de carte ! ");
+			idao.AddObject(cl);
+		}
 	}
 
 }

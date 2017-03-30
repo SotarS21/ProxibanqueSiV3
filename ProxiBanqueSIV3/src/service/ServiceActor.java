@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,9 @@ import metier.Client;
 @Named
 @Dependent
 public class ServiceActor implements IServiceActor {
+
+	private static double valueAuditCasual = -5000.0;
+	private static double valueAuditEntreprise = -50000.0;
 
 	@Inject
 	linkDao dao;
@@ -51,7 +55,7 @@ public class ServiceActor implements IServiceActor {
 	@Override
 	public void addNewClient(Client cl) {
 		// TO DO get adviser from BDD to add client into him and updateAdviser
-		System.out.println("dao = "+dao);
+		System.out.println("dao = " + dao);
 		dao.AddObject(cl);
 
 	}
@@ -69,8 +73,10 @@ public class ServiceActor implements IServiceActor {
 
 	/**
 	 * récupère le client sur la base de données
-	 * @param id = identifiant du client 
-	 * @return le client 
+	 * 
+	 * @param id
+	 *            = identifiant du client
+	 * @return le client
 	 */
 	@Override
 	public Client getClientById(long id) {
@@ -188,6 +194,45 @@ public class ServiceActor implements IServiceActor {
 	@Override
 	public List<Agence> getAllAgence() {
 		return dao.getElementsByType(Agence.class, "Agence");
+	}
+
+	@Override
+	public List<Client> doAudit() {
+
+		List<Client> listClient = dao.getElementsByType(Client.class, "Client");
+
+		List<Client> retList = new ArrayList<>();
+
+		for (Client client : listClient) {
+			double solde = 0.0;
+			switch (client.getType()) {
+			case CASUAL:
+				solde = client.getAccountCurrent().getSold();
+				if (solde < valueAuditCasual)
+					retList.add(client);
+				break;
+			case ENTERPRISE:
+				solde = client.getAccountCurrent().getSold();
+				if (solde < valueAuditEntreprise)
+					retList.add(client);
+				break;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Change les valeurs à vérifier pour les comptes
+	 * 
+	 * @param vAC
+	 *            : valueAuditCasual
+	 * @param vAE
+	 *            : valueAuditEntreprise
+	 */
+	public void changeValues(double vAC, double vAE) {
+		valueAuditCasual = vAC;
+		valueAuditEntreprise = vAE;
 	}
 
 }
