@@ -43,6 +43,11 @@ public class Adviser {
 	public Adviser() {
 		super();
 	}
+	public Adviser (String firstName, String lastName)
+	{
+		this.firstName =firstName;
+		this.lastName = lastName;
+	}
 
 
 	public boolean addClient(Client cl) {
