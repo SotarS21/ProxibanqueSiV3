@@ -13,6 +13,7 @@ import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import metier.BankAccount;
 import metier.Client;
 import service.IServiceActor;
 
@@ -25,9 +26,23 @@ public class ClientController implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<Client> listClient = new ArrayList<>();
+	private static List<Client> listClient = new ArrayList<>();
 	private static Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
-	
+	static{
+		BankAccount compt1 = new BankAccount();
+		compt1.setSold(254);
+		BankAccount compt2 = new BankAccount();
+		compt1.setSold(25454);
+		Client c1 = new Client("toto", "toto");
+		Client c2 = new Client("titi", "titi");
+		c1.getAccounts().add(compt2);
+		c1.getAccounts().add(compt1);
+		compt1.setClient(c1);
+		compt2.setClient(c1);
+		
+		listClient.add(c1);
+		listClient.add(c2);
+	}
 	@Inject
 	private IServiceActor service;
 
@@ -36,9 +51,15 @@ public class ClientController implements Serializable {
 	}
 
 	public void loadClients(){
-		listClient.clear();
+		//listClient.clear();
 		try{
-			listClient = service.getAllClient();
+		for (Client client : listClient) {
+			for (BankAccount c : client.getAccounts()) {
+				System.out.println(c.getSold());
+			}
+		}
+		
+			//listClient = service.getAllClient();
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -62,7 +83,7 @@ public class ClientController implements Serializable {
 		}
 		return "listClient";
 	}
-	
+
 	public void cancel(RowEditEvent event) {
 		LOGGER.info("Cancel modification!");
   }
