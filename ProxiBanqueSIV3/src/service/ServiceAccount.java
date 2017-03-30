@@ -7,8 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dao.Idao;
-import metier.AccountCurrent;
-import metier.AccountSaving;
 import metier.BankAccount;
 import metier.BankAccount.etype;
 import metier.Client;
@@ -45,14 +43,16 @@ public class ServiceAccount implements IServiceAccount {
 
 		switch (type) {
 		case CURRENT_ACCOUNT:
-			AccountCurrent tmpCur = new AccountCurrent(5454, idClient, startSold, "2017-03-15");
-			// dao.getElementById(Client.class, idClient).setAccount(tmp);
+			BankAccount tmpCur = new BankAccount( idClient, startSold, "2017-03-15", etype.CURRENT_ACCOUNT);
+			dao.getElementById(Client.class, idClient).addBanqueAccount(tmpCur);		
+			
 			dao.AddObject(tmpCur);
 			break;
 		case SAVING_ACCOUNT:
-			AccountSaving tmpSav = new AccountSaving(5454, idClient, startSold, "2017-03-15");
-			// dao.getElementById(Client.class, idClient).setAccount(tmp);
-			dao.AddObject(tmpSav);// changer l'ini du compte
+			BankAccount tmpSav = new BankAccount( idClient, startSold, "2017-03-15", etype.SAVING_ACCOUNT);
+			dao.getElementById(Client.class, idClient).addBanqueAccount(tmpSav);		
+			
+			dao.AddObject(tmpSav);
 			break;
 
 		}

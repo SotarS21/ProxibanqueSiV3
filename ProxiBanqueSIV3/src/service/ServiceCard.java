@@ -6,8 +6,6 @@ import javax.inject.Inject;
 import dao.Idao;
 import metier.BankAccount.etype;
 import metier.BankCard;
-import metier.CardElectron;
-import metier.CardVisa;
 import metier.Client;
 
 /**
@@ -30,17 +28,7 @@ public class ServiceCard {
 
 		if (cl.getAccountCurrent() != null) {
 
-			switch (type) {
-			case VISA:
-				cl.AddBankCard(new CardVisa(idCl));
-				break;
-			case ELECTRON:
-				cl.AddBankCard(new CardElectron(idCl));
-				break;
-			default:
-				break;
-			}
-
+			cl.AddBankCard(new BankCard(idCl, type));
 			idao.AddObject(cl);
 		}
 	}
