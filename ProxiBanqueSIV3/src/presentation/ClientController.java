@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.annotations.common.util.impl.Log_.logger;
-import org.jboss.logging.Logger;
+
 import org.primefaces.event.RowEditEvent;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import metier.Client;
+import service.IServiceActor;
 
 @Named
-@SessionScoped
+//@SessionScoped
 public class ClientController implements Serializable {
 
 	/**
@@ -36,7 +38,7 @@ public class ClientController implements Serializable {
 	public void loadClients(){
 		listClient.clear();
 		try{
-			listClient = service.getClients();
+			listClient = service.getAllClient();
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -44,7 +46,7 @@ public class ClientController implements Serializable {
 	public String updateClient(Client client){
 		LOGGER.info("Update Client!");
 		try {
-			service.updateClient(client);
+			service.updateClientToBDD(client);
 			
 		} catch (Exception e) {
 			return null;
@@ -54,7 +56,7 @@ public class ClientController implements Serializable {
 	public String deleteClient(long id){
 		LOGGER.info("Delete CLient!");
 		try {
-			service.deleteClient(id);
+			service.removeClient(id);
 		} catch (Exception e) {
 			return null;
 		}

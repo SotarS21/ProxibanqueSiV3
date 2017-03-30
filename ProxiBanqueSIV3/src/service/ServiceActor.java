@@ -5,20 +5,20 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import dao.Idao;
+import dao.linkDao;
 import metier.Adviser;
 import metier.Agence;
 import metier.Client;
 
 /**
- * @author Jonas Maeva
+ * @author Jonas Kevin
  *
  */
 @Dependent
 public class ServiceActor implements IServiceActor {
 
 	@Inject
-	Idao dao;
+	linkDao dao;
 
 	/**
 	 * Modification des données d'un client de la base de données
@@ -43,6 +43,7 @@ public class ServiceActor implements IServiceActor {
 	@Override
 	public void addNewClient(Client cl) {
 		// TO DO get adviser from BDD to add client into him and updateAdviser
+		System.out.println("dao = "+dao);
 		dao.AddObject(cl);
 
 	}
