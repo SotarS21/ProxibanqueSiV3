@@ -1,23 +1,55 @@
 package metier;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.ManagedBean;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @ManagedBean
 @Entity
 @DiscriminatorValue("CLIENT")
-public class Client extends Person {
+public class Client extends Person implements Serializable {
 
-	private Adviser aviserCurrent;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6186053888360369087L;
+	@ManyToOne(cascade={CascadeType.PERSIST})
+	@JoinColumn(updatable=false,insertable=false, name="personId")
+	private Adviser adviserCurrent;
 	private String address;
 	private String zipCode;
 	private String town;
 
-	private AccountCurrent accountCurrent;
-	private AccountSaving accountSaving;
+	@OneToMany(mappedBy="client", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST})
+	private List<BankAccount> accounts = new ArrayList<>();
 	private boolean clientIsRich;
+	@OneToOne    
+	@JoinColumn(name="numCard", referencedColumnName = "numCard")
 	private BankCard currentCard;
+
+	public Adviser getAdviserCurrent() {
+		return adviserCurrent;
+	}
+
+
+	public void setAdviserCurrent(Adviser adviserCurrent) {
+		this.adviserCurrent = adviserCurrent;
+	}
+
+
+	public List<BankAccount> getAccounts() {
+		return accounts;
+	}
 
 	protected double overdraftRate;
 	
@@ -38,27 +70,6 @@ public class Client extends Person {
 	protected etype type;
 
 	
-
-
-	public AccountCurrent getAccountCurrent() {
-		return accountCurrent;
-	}
-
-	public void setAccountCurrent(AccountCurrent accountCurrent) {
-		this.accountCurrent = accountCurrent;
-	}
-
-	public AccountSaving getAccountSaving() {
-		return accountSaving;
-	}
-
-	public void setAccountSaving(AccountSaving accountSaving) {
-		this.accountSaving = accountSaving;
-	}
-
-	public Adviser getIdAviser() {
-		return aviserCurrent;
-	}
 
 	public String getAddress() {
 		return address;
@@ -84,9 +95,6 @@ public class Client extends Person {
 		return currentCard;
 	}
 
-	public void setIdAviser(Adviser current) {
-		this.aviserCurrent = current;
-	}
 
 	public void setAddress(String address) {
 		this.address = address;

@@ -1,5 +1,6 @@
 package metier;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -16,19 +17,18 @@ import javax.persistence.InheritanceType;
 public class Person {
 	
 	@Id
+	@Column(name="personId")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	private String idAgence;
 	private String lastName;
 	private String firstName;
 	private String cellphone;
 	private String email;
 	private String login;
 	private String password;
-	
-	
-	
-	
+
+
+
 	public Person(String lastName, String firstName) {
 		super();
 		this.lastName = lastName;
@@ -77,14 +77,6 @@ public class Person {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getIdAgence() {
-		return idAgence;
-	}
-
-	public void setIdAgence(String idAgence) {
-		this.idAgence = idAgence;
 	}
 
 	public String getLastName() {
