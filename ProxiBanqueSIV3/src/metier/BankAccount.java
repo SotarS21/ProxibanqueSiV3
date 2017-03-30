@@ -33,6 +33,14 @@ public class BankAccount implements Serializable{
 	private Client client;
 	
 
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
 	public double getRateAccount() {
 		return rateAccount;
 	}

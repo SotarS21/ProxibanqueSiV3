@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.ManagedBean;
 import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,7 +13,6 @@ import javax.persistence.OneToMany;
 
 @ManagedBean
 @Entity
-@DiscriminatorValue("ADVISER")
 public class Adviser extends Person {
 
 	@OneToMany(mappedBy = "adviserCurrent", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })

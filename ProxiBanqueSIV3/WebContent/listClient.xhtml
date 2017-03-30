@@ -27,9 +27,6 @@
 	</div>
 	<div id="container">
 		<div id="content">
-			<h:messages globalOnly="true" />
-			<h:button value="Add Student" styleClass="add-student-button"
-				outcome="add-student-form" />
 			<h:form id="form">
 				<p:growl id="msgs" showDetail="true" />
 				<p:dataTable value="#{clientController.listClient}" editable="true"
@@ -42,7 +39,7 @@
 						listener="#{clientController.updateClient(tempStudent)}"
 						update=":form:msgs" />
 					<p:ajax event="rowEditCancel"
-						listener="#{clientController.cancel()}" update=":form:msgs" />
+						listener="#{clientController.cancel}" update=":form:msgs" />
 					<p:column headerText="First Name" sortBy="#{tempStudent.firstName}">
 						<p:cellEditor>
 							<f:facet name="output">
@@ -78,7 +75,7 @@
 					
 					<p:column headerText="Supprimer" style="width:85px">
 						<p:commandButton icon="ui-icon-trash" title="Delete this student"
-							actionListener="#{clientController.deleteClient(tempStudent)}" ajax="false" />
+							actionListener="#{clientController.deleteStudent(tempStudent.id)}" ajax="false" />
 					</p:column>
 					<p:column headerText="Modifier" style="width:80px">
 						<p:rowEditor />
