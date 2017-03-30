@@ -74,7 +74,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public List<Client> getAllClient() {
-		return dao.getElementsByType(Client.class);
+		return dao.getElementsByType(Client.class, "Client");
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public List<Adviser> getAllAdviser() {
-		return dao.getElementsByType(Adviser.class);
+		return dao.getElementsByType(Adviser.class, "Adviser");
 	}
 
 	// ** AGENCE METHODE
@@ -178,7 +178,7 @@ public class ServiceActor implements IServiceActor {
 	 */
 	@Override
 	public List<Agence> getAllAgence() {
-		return dao.getElementsByType(Agence.class);
+		return dao.getElementsByType(Agence.class, "Agence");
 	}
 
 }
