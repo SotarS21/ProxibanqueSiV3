@@ -1,67 +1,56 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<f:metadata>
-	<f:event type="preRenderView"
-		listener="#{clientController.loadClients()}" />
-</f:metadata>
 
-<h:head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{clientController.loadClients()}" />
+	</f:metadata>
 
-	<title>Student Tracker App</title>
-
-	<h:outputStylesheet library="css" name="style.css" />
-
-</h:head>
-
-<h:body>
-	<div id="wrapper">
-		<div id="header">
-			<h2>FooBar University</h2>
-		</div>
-	</div>
 	<div id="container">
 		<div id="content">
 			<h:form id="form">
 				<p:growl id="msgs" showDetail="true" />
 				<p:dataTable value="#{clientController.listClient}" editable="true"
-					var="tempStudent" style="margin-bottom:20px" scrollable="true"
-					scrollHeight="200">
-					<f:facet name="header">
-            		FooBar University
-       			 </f:facet>
+					var="tempClient" style="margin-bottom:20px" scrollable="true"
+					scrollHeight="800" scrollWidth="1600">
+					<f:facet name="header">Liste des clients</f:facet>
 					<p:ajax event="rowEdit"
-						listener="#{clientController.updateClient(tempStudent)}"
+						listener="#{clientController.updateClient(tempClient)}"
 						update=":form:msgs" />
 					<p:ajax event="rowEditCancel"
-						listener="#{clientController.cancel}" update=":form:msgs" />
-					<p:column headerText="First Name" sortBy="#{tempStudent.firstName}">
+						listener="#{clientController.cancel()}" update=":form:msgs" />
+
+					<p:column style="width:40px">
+						<p:rowToggler />
+					</p:column>
+					<p:column headerText="Prénom"
+						sortBy="#{tempClient.firstName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{tempStudent.firstName}" />
+								<h:outputText value="#{tempClient.firstName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText value="#{tempStudent.firstName}" style="width:100%" />
+								<p:inputText value="#{tempClient.firstName}" style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
-					<p:column headerText="Last Name" sortBy="#{tempStudent.lastName}">
+					<p:column headerText="Nom"
+						sortBy="#{tempClient.lastName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{tempStudent.lastName}" />
+								<h:outputText value="#{tempClient.lastName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText value="#{tempStudent.lastName}" style="width:100%" />
+								<p:inputText value="#{tempClient.lastName}" style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 
 					</p:column>
-					<p:column headerText="Email" sortBy="#{tempStudent.email}">
+					<p:column headerText="Email">
 						<p:cellEditor>
 							<f:facet name="output">
 								<h:outputText value="#{tempStudent.email}" />
@@ -71,18 +60,114 @@
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
-					
-					
-					<p:column headerText="Supprimer" style="width:85px">
-						<p:commandButton icon="ui-icon-trash" title="Delete this student"
-							actionListener="#{clientController.deleteStudent(tempStudent.id)}" ajax="false" />
+					<p:column headerText="Téléphone">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempClient.cellphone}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempClient.cellphone}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
-					<p:column headerText="Modifier" style="width:80px">
+					<p:column headerText="Conseiller">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempClient.adviserCurrent.lastName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempClient.adviserCurrent.lastName}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Adresse">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempClient.address}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempClient.address}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Code postal">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempClient.zipCode}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempClient.zipCode}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Ville">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempClient.town}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempClient.town}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Supprimer" style="width:85px">
+						<p:commandButton icon="ui-icon-trash" title="Delete this client"
+							actionListener="#{clientController.deleteClient(tempClient)}"
+							ajax="false" />
+						<!-- fonction de suppression de client -->
+					</p:column>
+					<p:column  headerText="Modifier" style="width:80px">
 						<p:rowEditor />
 					</p:column>
+					<p:rowExpansion >
+						<p:dataTable value="#{tempClient.accounts}"
+							var="account" resizableColumns="true">
+							<f:facet name="header">
+								<h:outputText value="Account Details"></h:outputText>
+							</f:facet>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Account type"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{account.type}" />
+							</p:column>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Account number"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{account.numAccount}" />
+							</p:column>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Account sold"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{account.sold}" />
+							</p:column >
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Date ouverture"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{account.openDate}" />
+							</p:column>
+							<p:column colspan="2" headerText="Virement" style="width:85px">
+						<p:commandButton title="Virement"
+							actionListener="#"
+							ajax="false" />
+						
+					</p:column>
+					<p:column headerText="Supprimer" style="width:85px">
+						<p:commandButton icon="ui-icon-trash" title="Delete this client"
+							actionListener="#{clientController.deleteAccount(tempClient.id, account.type)}"
+							ajax="false" />
+						
+					</p:column>
+							</p:dataTable>
+					</p:rowExpansion>
+
+
 				</p:dataTable>
 			</h:form>
 		</div>
 	</div>
-</h:body>
-</html>
+</ui:composition>

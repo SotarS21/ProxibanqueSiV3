@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{conseillerController.loadAdvisers()}" />
+	</f:metadata>
+
+	<div id="container">
+		<div id="content">
+			<h:form id="form">
+				<p:growl id="msgs" showDetail="true" />
+				<p:dataTable value="#{conseillerController.listAdviser}" editable="true"
+					var="tempConseiller" style="margin-bottom:20px" scrollable="true"
+					scrollHeight="800" scrollWidth="1600">
+					<f:facet name="header">Liste des clients</f:facet>
+					<p:ajax event="rowEdit"
+						listener="#{conseillerController.updateAdviser(tempConseiller)}"
+						update=":form:msgs" />
+					<p:ajax event="rowEditCancel"
+						listener="#{conseillerController.cancel}" update=":form:msgs" />
+
+					<p:column style="width:40px">
+						<p:rowToggler />
+					</p:column>
+					<p:column headerText="Prénom"
+						sortBy="#{tempConseiller.firstName}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempConseiller.firstName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempConseiller.firstName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Nom"
+						sortBy="#{tempConseiller.lastName}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempConseiller.lastName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempConseiller.lastName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column headerText="Email">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempConseiller.email}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempConseiller.email}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Téléphone">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{tempConseiller.cellphone}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{tempConseiller.cellphone}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					
+					<p:column headerText="Supprimer" style="width:85px">
+						<p:commandButton icon="ui-icon-trash" title="Delete this Adviser"
+							actionListener="#{conseillerController.deleteAdviser(tempConseiller)}"
+							ajax="false" />
+						fonction de suppression de client
+					</p:column>
+					<p:column  headerText="Modifier" style="width:80px">
+						<p:rowEditor />
+					</p:column>
+					<p:rowExpansion >
+						<p:dataTable value="#{tempConseiller.listOfClient}"
+							var="tempClient" resizableColumns="true">
+							<f:facet name="header">
+								<h:outputText value="Client du conseiller"></h:outputText>
+							</f:facet>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Prenom client"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{tempClient.firstName}" />
+							</p:column>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Téléphone client"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{tempClient.lastName}" />
+							</p:column>
+							<p:column colspan="2" >
+								<f:facet name="header">
+									<h:outputText value="Téléphone client"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{tempClient.cellphone}" />
+							</p:column >
+							
+							
+							</p:dataTable>
+					</p:rowExpansion>
+
+
+				</p:dataTable>
+			</h:form>
+		</div>
+	</div>
+</ui:composition>
