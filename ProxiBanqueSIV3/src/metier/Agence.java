@@ -14,8 +14,9 @@ import javax.persistence.Id;
 public class Agence {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long id;
+	private String identification;
 	private String openDate;
 	private Director currentDirector;
 	private List<Adviser>	currentListOfAdviser = new ArrayList<Adviser>();
@@ -23,6 +24,16 @@ public class Agence {
 
 	public Agence() {
 		super();
+	}
+
+	
+	public String getIdentification() {
+		return identification;
+	}
+
+
+	public void setIdentification(String identification) {
+		this.identification = identification;
 	}
 
 
@@ -51,7 +62,7 @@ public class Agence {
 	}
 
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 

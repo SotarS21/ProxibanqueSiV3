@@ -19,7 +19,7 @@ public class BankCard {
 
 	// Attributs
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long numCard;
 	private int passwordCard;
 	private long idClient;

@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 public class CustomerCasual extends Client{
 	
 
-
 	public CustomerCasual() {
 		super();
 		// TODO Auto-generated constructor stub

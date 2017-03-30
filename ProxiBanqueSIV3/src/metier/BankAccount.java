@@ -20,7 +20,7 @@ public class BankAccount {
 	// attributs
 	private long idClient;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long numAccount;
 	private double sold;
 	private String openDate;
