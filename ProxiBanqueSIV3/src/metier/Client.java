@@ -23,53 +23,48 @@ public class Client extends Person implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6186053888360369087L;
-	@ManyToOne(cascade={CascadeType.PERSIST})
-	@JoinColumn(updatable=false,insertable=false, name="personId")
+	@ManyToOne(cascade = { CascadeType.PERSIST })
+	@JoinColumn(updatable = false, insertable = false, name = "personId")
 	private Adviser adviserCurrent;
 	private String address;
 	private String zipCode;
 	private String town;
 
-	@OneToMany(mappedBy="client", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST})
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
 	private List<BankAccount> accounts = new ArrayList<>();
 	private boolean clientIsRich;
-	@OneToOne    
-	@JoinColumn(name="numCard", referencedColumnName = "numCard")
+	@OneToOne
+	@JoinColumn(name = "numCard", referencedColumnName = "numCard")
 	private BankCard currentCard;
 
 	public Adviser getAdviserCurrent() {
 		return adviserCurrent;
 	}
 
-
 	public void setAdviserCurrent(Adviser adviserCurrent) {
 		this.adviserCurrent = adviserCurrent;
 	}
-
 
 	public List<BankAccount> getAccounts() {
 		return accounts;
 	}
 
 	protected double overdraftRate;
-	
+
 	public Client() {
 
 	}
 
-	
 	public Client(String lastName, String firstName) {
 		super(lastName, firstName);
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public enum etype{
-		CASUAL,ENTERPRISE;
+	public enum etype {
+		CASUAL, ENTERPRISE;
 	}
-	protected etype type;
 
-	
+	protected etype type;
 
 	public String getAddress() {
 		return address;
@@ -95,7 +90,6 @@ public class Client extends Person implements Serializable {
 		return currentCard;
 	}
 
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -107,7 +101,7 @@ public class Client extends Person implements Serializable {
 	public void setTown(String town) {
 		this.town = town;
 	}
-	
+
 	public etype getType() {
 		return type;
 	}
@@ -128,5 +122,34 @@ public class Client extends Person implements Serializable {
 		this.overdraftRate = overdraftRate;
 	}
 
+	public BankAccount getAccountCurrent() {
+		for (BankAccount bankAccount : accounts) {
+			if (bankAccount.getType() == BankAccount.etype.CURRENT_ACCOUNT)
+				return bankAccount;
+		}
+		return null;
+	}
+
+	public BankAccount getAccountSaving() {
+		for (BankAccount bankAccount : accounts) {
+			if (bankAccount.getType() == BankAccount.etype.SAVING_ACCOUNT)
+				return bankAccount;
+		}
+		return null;
+	}
+
+	public void setAccountCurrent(BankAccount newBA) {
+		for (BankAccount bankAccount : accounts) {
+			if (bankAccount.getType() == BankAccount.etype.CURRENT_ACCOUNT)
+				bankAccount = newBA;
+		}
+	}
+
+	public void setAccountSaving(BankAccount newBA) {
+		for (BankAccount bankAccount : accounts) {
+			if (bankAccount.getType() == BankAccount.etype.SAVING_ACCOUNT)
+				bankAccount = newBA;
+		}
+	}
 
 }
