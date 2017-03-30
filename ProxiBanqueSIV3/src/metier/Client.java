@@ -19,12 +19,12 @@ public class Client extends Person {
 	private String zipCode;
 	private String town;
 
-	private List<BankAccount> listOfAccount = new ArrayList<>();
+	private AccountCurrent accountCurrent;
+	private AccountSaving accountSaving;
 	private boolean clientIsRich;
 	private BankCard currentCard;
 
 	protected double overdraftRate;
-	
 	
 	public Client() {
 
@@ -45,7 +45,23 @@ public class Client extends Person {
 	}
 
 	public Client(String idAgence, String lastName) {
-		this(0, idAgence, lastName, "", "", "", "", "", ""); // 
+		this(0, idAgence, lastName, "", "", "", "", "", ""); 
+	}
+
+	public AccountCurrent getAccountCurrent() {
+		return accountCurrent;
+	}
+
+	public void setAccountCurrent(AccountCurrent accountCurrent) {
+		this.accountCurrent = accountCurrent;
+	}
+
+	public AccountSaving getAccountSaving() {
+		return accountSaving;
+	}
+
+	public void setAccountSaving(AccountSaving accountSaving) {
+		this.accountSaving = accountSaving;
 	}
 
 	public Adviser getIdAviser() {
@@ -64,20 +80,8 @@ public class Client extends Person {
 		return town;
 	}
 
-	public List<BankAccount> getListOfAccount() {
-		return listOfAccount;
-	}
-
-	public void addBankAccount(BankAccount ba) {
-		this.listOfAccount.add(ba);
-	}
-
 	public void AddBankCard(BankCard bc) {
 		this.currentCard = bc;
-	}
-
-	public void removeBankAccount(BankAccount ba) {
-		this.listOfAccount.remove(ba);
 	}
 
 	public boolean isClientIsRich() {
@@ -124,25 +128,5 @@ public class Client extends Person {
 		this.overdraftRate = overdraftRate;
 	}
 
-	public BankAccount getAccount(BankAccount.etype type) {
-
-		if (this.listOfAccount.size() > 0) {
-
-			for (BankAccount bankAccount : this.listOfAccount) {
-				if (bankAccount.getType().equals(type)) {
-					//System.out.println("Client getAccount by type : "+type+" = "+bankAccount);
-					return  bankAccount;
-				}
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		return "Client [idAviser=" + aviserCurrent + ", address=" + address + ", zipCode=" + zipCode + ", town=" + town
-				+ ", listOfAccount=" + listOfAccount + ", clientIsRich=" + clientIsRich + ", currentCard=" + currentCard
-				+ ", overdraftRate=" + overdraftRate + "]";
-	}
 
 }
