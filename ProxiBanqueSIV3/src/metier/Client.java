@@ -151,5 +151,15 @@ public class Client extends Person implements Serializable {
 				bankAccount = newBA;
 		}
 	}
+	
+	public void addBanqueAccount(BankAccount Ba)
+	{
+		this.accounts.add(Ba);
+	}
+	public void removeBanqueAccount(BankAccount Ba)
+	{
+		if (Ba != null)
+			this.accounts.remove(Ba);
+	}
 
 }
