@@ -1,13 +1,13 @@
 package dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
-import metier.Person;
 
 
 public class linkDao implements Idao{
@@ -20,6 +20,16 @@ public class linkDao implements Idao{
 	public void connection()
 	{
 		em = emf.createEntityManager();
+		
+	}
+
+	@Override
+	public void deconnection()
+	{
+		if (em != null)
+			linkDao.em.close();
+		if (emf != null)
+			emf.close();
 		
 	}
 	
@@ -42,7 +52,7 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			linkDao.em.close();			
 		}
 	}
 
@@ -64,9 +74,14 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
+			linkDao.em.close();
 		}
 	}
-	@Override
+	
+
+
+	
+@Override
 	public <T> T getElementById(Class<T> classType, long id)
 	{
 		T ret = null;
@@ -84,7 +99,7 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			linkDao.em.close();
 		}
 		return ret;
 	}
@@ -106,28 +121,33 @@ public class linkDao implements Idao{
 				linkDao.em.getTransaction().rollback();
 			e.printStackTrace();
 		}finally {
-			
+			linkDao.em.close();
 		}
 	}
 	
 
-	@Override
-	public void deconnection()
-	{
-		if (em != null)
-			linkDao.em.close();
-		if (emf != null)
-			emf.close();
-		
-	}
-
 
 	@Override
-	public <T> List<T> getElementsByType(Class<T> classtype) {
-		
-		List<T> retList = new ArrayList<>();
-		
-		return retList;
+	public <T> List<T> getElementsByType(Class<T> classType, String table) {
+
+		List<T> list = null ;
+		String sql = "SELECT c FROM "+ table + " c ";
+		EntityTransaction etxn = linkDao.em.getTransaction();
+		try {
+			etxn.begin();
+			TypedQuery<T> query = linkDao.em.createQuery(sql, classType);
+			list = query.getResultList();
+			etxn.commit();
+		} catch (Exception e) {
+			if (etxn != null)
+				linkDao.em.getTransaction().rollback();
+			System.out.println(e.getMessage());
+			
+		} finally {
+			if (em != null)
+				linkDao.em.close();
+		}
+		return list;
 	}
 	
 	
