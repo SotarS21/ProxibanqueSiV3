@@ -5,6 +5,9 @@ import java.util.List;
 
 public interface Idao {
 
+	public void initDao();
+	
+	
 	public void connection();
 	
 	public void deconnection();

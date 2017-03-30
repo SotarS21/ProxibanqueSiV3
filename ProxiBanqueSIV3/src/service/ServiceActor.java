@@ -2,8 +2,10 @@ package service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dao.linkDao;
 import metier.Adviser;
@@ -14,11 +16,17 @@ import metier.Client;
  * @author Jonas Kevin
  *
  */
+@Named
 @Dependent
 public class ServiceActor implements IServiceActor {
 
 	@Inject
 	linkDao dao;
+
+	@PostConstruct
+	public void initService() {
+		dao.initDao();
+	}
 
 	/**
 	 * Modification des données d'un client de la base de données

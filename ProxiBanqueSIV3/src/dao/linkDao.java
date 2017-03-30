@@ -9,12 +9,15 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+
 
 @Named
 public class linkDao implements Idao{
 
 	private  static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Carambar");
 	private static EntityManager em ;
+	
 	
 	public linkDao(){
 		
@@ -157,6 +160,12 @@ public class linkDao implements Idao{
 			deconnection();
 		}
 		return list;
+	}
+
+	@Override
+	public void initDao() {
+		
+		System.out.println("init");
 	}
 	
 	
