@@ -12,7 +12,7 @@ import metier.Client;
  * @author Jonas Maëva
  *
  */
-public class ServiceCard extends SService {
+public class ServiceCard extends IService {
 /**
  * Ajoute une carte au client pour son compte courant
  * @param idCl : identifiant client
@@ -37,7 +37,7 @@ public class ServiceCard extends SService {
 			}
 
 			DaoClient.getInstance().addClient(cl);
-		}else SService.sendInfoToclient(idCl, " n'a pas de compte courrant donc on ne peut pas lui assigner de carte ! ");
+		}else IService.sendInfoToclient(idCl, " n'a pas de compte courrant donc on ne peut pas lui assigner de carte ! ");
 	}
 
 }

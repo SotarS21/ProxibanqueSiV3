@@ -2,8 +2,8 @@ package service;
 
 import java.util.List;
 
-import dao.DaoAccount;
-import dao.DaoClient;
+import javax.enterprise.context.Dependent;
+
 import metier.AccountCurrent;
 import metier.AccountSaving;
 import metier.BankAccount;
@@ -14,7 +14,8 @@ import metier.Client;
  * @author Jonas Maeva
  *
  */
-public class ServiceAccount {
+@Dependent
+public class ServiceAccount implements {
 
 	public static long RITCH_CONDITION = 500000;
 
@@ -31,17 +32,15 @@ public class ServiceAccount {
 	 */
 	public static void addAccountToClient(long idClient, BankAccount.etype type, long startSold) {
 		if (startSold < 0) {
-			SService.sendInfoToclient(idClient, " vous ne pouvez rentrer un sold négatif");
+			// TO DO : LOOGER
 			startSold = 0;
 		}
 
 		switch (type) {
 		case CURRENT_ACCOUNT:
-			DaoClient.getInstance().getClientById(idClient)
-					.addBankAccount(new AccountCurrent(5847, idClient, startSold, "2017-03-15")); // changer l'init du compt
 			break;
 		case SAVING_ACCOUNT:
-			DaoClient.getInstance().getClientById(idClient)
+			Connector.getInstance().getElementById(Client.class,idClient)
 					.addBankAccount(new AccountSaving(5848, idClient, startSold, "2017-03-15")); // changer l'ini du compte
 			break;
 

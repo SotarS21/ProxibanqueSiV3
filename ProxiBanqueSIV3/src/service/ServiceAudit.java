@@ -10,7 +10,7 @@ import metier.Client;
  * @author Jonas 
  *
  */
-public class ServiceAudit extends SService {
+public class ServiceAudit extends IService {
 
 	private static double valueAuditCasual = -5000.0;
 	private static double valueAuditEntreprise = -50000.0;
